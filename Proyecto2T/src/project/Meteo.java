@@ -42,11 +42,11 @@ public class Meteo {
 
             if (!isValid) {
                 System.out.println("Esa opción no es válida");
-                System.out.println("Terminando el programa");
-                System.exit(0);
+
+            } else {
+                System.out.println("Introduce la ubicación que quieres consultar");
+                location = sc.nextLine();
             }
-            System.out.println("Introduce la ubicación que quieres consultar");
-            location = sc.nextLine();
             // Esto solucionará el problema de los espacios en ciudades cuyo nombre tiene
             // más de una palabra
             location = location.replace(" ", "%20");
@@ -184,9 +184,11 @@ public class Meteo {
         String avgTemp = extractValue(data, "\"avgtemp_c\":", ",");
         String totalPrecip = extractValue(data, "\"totalprecip_mm\":", ",");
 
-        // Esto hace que si en lugar de historial elegimos prediccion, invierta el
-        // calculo de los dias en LocalDate
-        // De esta forma no tenemos que repetir el switch de abajo para ambos métodos
+        /*
+         * Esto hace que si en lugar de historial elegimos prediccion, invierta el
+         * calculo de los dias en LocalDate
+         * De esta forma no tenemos que repetir el switch de abajo para ambos métodos
+         */
         if (option == 2) {
             days = -days;
         }
@@ -310,20 +312,35 @@ public class Meteo {
             String data = "";
             String ask;
             boolean repeat;
+            boolean advance = false;
             do {
+                do {
+                    switch (menu()) {
+                        case 1 -> {
+                            data = getCurrentWeather();
+                            advance = true;
+                        }
 
-                switch (menu()) {
-                    case 1 -> data = getCurrentWeather();
+                        case 2 -> {
+                            data = getForecast();
+                            advance = true;
+                        }
 
-                    case 2 -> data = getForecast();
+                        case 3 -> {
+                            data = getHistory();
+                            advance = true;
+                        }
 
-                    case 3 -> data = getHistory();
+                        default -> {
+                            System.out.println("Vuelve a introducir la opción");
 
-                    default -> {
-                        System.out.println("Terminando el programa");
-                        System.exit(0);
+                        }
                     }
-                }
+
+                } while (!advance);
+
+                advance = false;
+
                 output(data);
 
                 System.out.println("Quieres hacer otra consulta?");
@@ -332,7 +349,12 @@ public class Meteo {
                 ask = ask.toLowerCase();
                 repeat = ask.equals("si");
 
-            } while (repeat == true);
+            } while (repeat);
+            System.out.println(" ");
+            System.out.println("Gracias por utilizar este programa!");
+            System.out.println("Hasta la próxima");
+            System.out.println(" ");
+
         } catch (java.lang.StringIndexOutOfBoundsException e) {
 
         }
