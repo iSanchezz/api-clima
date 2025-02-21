@@ -318,10 +318,10 @@ public class Meteo {
             String data = "";
             String ask;
             boolean repeat;
-            boolean advance = false;
+            boolean advance;
             do {
                 do {
-
+                    advance = false;
                     switch (menu()) {
                         case 1 -> {
                             data = getCurrentWeather();
@@ -345,8 +345,6 @@ public class Meteo {
                     }
 
                 } while (!advance || answer.equals(""));
-
-                advance = false;
 
                 output(data);
 
