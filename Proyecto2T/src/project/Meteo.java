@@ -13,6 +13,7 @@ public class Meteo {
     String language = "&lang=es"; // Esto es necesario para construir la URL
     String apiKey;
     String location;
+    String answer = "";
     int option;
     int days;
 
@@ -80,6 +81,11 @@ public class Meteo {
 
         } catch (Exception e) {
             e.getMessage();
+        }
+        answer = response.toString();
+        if (answer.equals("")) {
+            System.out.println("La ubicación introducida no es válida.");
+            System.out.println("Volviendo al menú");
         }
         return response.toString();
 
@@ -315,6 +321,7 @@ public class Meteo {
             boolean advance = false;
             do {
                 do {
+
                     switch (menu()) {
                         case 1 -> {
                             data = getCurrentWeather();
@@ -337,7 +344,7 @@ public class Meteo {
                         }
                     }
 
-                } while (!advance);
+                } while (!advance || answer.equals(""));
 
                 advance = false;
 
